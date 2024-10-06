@@ -129,8 +129,8 @@ export class Model<
    * @returns {Promise<[unknown[], unknown]>}
    * @memberof Model
    */
-  public static refreshMaterializedView(): Promise<[unknown[], unknown]> {
-    return this.queryInterface.refreshMaterializedView(this.getTableName());
+  public static refreshMaterializedView(concurrently: boolean = false): Promise<[unknown[], unknown]> {
+    return this.queryInterface.refreshMaterializedView(this.getTableName(), concurrently);
   }
 }
 

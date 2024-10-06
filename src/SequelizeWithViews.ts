@@ -95,7 +95,7 @@ export interface QueryInterfaceWithViews extends QueryInterface {
     viewName: any,
     viewDefinition: string
   ) => Promise<[unknown[], unknown]>;
-  refreshMaterializedView: (viewName: any) => Promise<[unknown[], unknown]>;
+  refreshMaterializedView: (viewName: any, concurrently?: boolean) => Promise<[unknown[], unknown]>;
 }
 
 /**
@@ -172,9 +172,10 @@ export class Sequelize extends SequelizeOrig {
 
     if (typeof this.queryInterface.refreshMaterializedView != 'function') {
       this.queryInterface.refreshMaterializedView = function (
-        viewName: any
+        viewName: any,
+        concurrently?: boolean
       ): Promise<[unknown[], unknown]> {
-        return this.sequelize.query(`REFRESH MATERIALIZED VIEW ${viewName}`);
+        return this.sequelize.query(`REFRESH MATERIALIZED VIEW${concurrently ? ' CONCURRENTLY' : ' '} ${viewName}`);
       };
     }
 
